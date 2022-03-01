@@ -3,12 +3,12 @@ from objects import *
 player = Player(
     name = "Main",
     hit_points = 15,
-    alignment = aligns[1],
+    alignment = aligns[0],
     level = 1,
     skill = None,
     species = "Human",
     equipment = [
-        "Dagger",
+        consumables[0]
     ]
 )
 
