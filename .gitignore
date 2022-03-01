@@ -1,0 +1,6 @@
+#folders
+__pycache__
+
+# files
+reference.py
+*.pdf
