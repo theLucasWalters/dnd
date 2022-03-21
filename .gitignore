@@ -5,3 +5,4 @@ assets
 # files
 reference.py
 *.pdf
+tests.py

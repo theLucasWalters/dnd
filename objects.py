@@ -1,5 +1,8 @@
-# useful variables
+# imports
+import errors as err
 
+
+# useful variables
 ## alignments
 aligns = [
     "Lawful Good",
@@ -15,7 +18,7 @@ aligns = [
 
 ## all the difference species
 ### I got this list from https://www.dndbeyond.com/races; it may not be complete
-species = [
+all_species = [
     "Human",
     "Dwarf",
     "Dragonborn",
@@ -68,10 +71,11 @@ species = [
 ## all the different items a character can have
 consumables = [
     "Dagger",
+    # others to be added
 ]
 
-# OBJECTS
 
+# OBJECTS
 ## CHARACTERS
 class Character(object):
     def __init__(self, name:str, hit_points:int, alignment:str, level:int, skill:str, species:str, equipment:str=[]):
@@ -82,25 +86,50 @@ class Character(object):
         self.skill      = skill
         self.species    = species
         self.equipment  = equipment
+        self.check_valid()
+
+    # method to check if inputted values are valid
+    def check_valid(self):
+        error:bool = False
+
+        # check the alignment
+        if self.alignment not in aligns:
+            print(err.InvalidAlignment(self.alignment))
+            error = True
+
+        # check species
+        if self.species not in all_species:
+            print(err.InvalidSpecies(self.species))
+            error = True
+
+        if error:
+            quit()
+        else:
+            pass
+
 
 class Player(Character):
     def __init__(self, name, hit_points, alignment, level, skill, species, equipment, friendly:bool=True):
         super().__init__(name, hit_points, alignment, level, skill, species, equipment)
         self.friendly = friendly
 
+
 class NPC(Character):
     def __init__(self, name, hit_points, alignment, level, skill, species):
         super().__init__(name, hit_points, alignment, level, skill, species)
+
 
 class Friendly(NPC):
     def __init__(self, name, hit_points, alignment, level, skill, species, equipment, friendly:bool=True):
         super().__init__(name, hit_points, alignment, level, skill, species, equipment)
         self.friendly = friendly
 
+
 class Enemy(NPC):
     def __init__(self, name, hit_points, alignment, level, skill, species, equipment, friendly:bool=False):
         super().__init__(name, hit_points, alignment, level, skill, species, equipment)
         self.friendly = friendly
+
 
 ## ITEMS
 class Item:
@@ -108,10 +137,12 @@ class Item:
         self.price  = price
         self.weight = weight
 
+
 class Weapon(Item):
     def __init__(self, price, weight, damage:int):
         super().__init__(price, weight)
         self.damage = damage
+
 
 class Consumable(Item):
     def __init__(self, price, weight, description:str):
