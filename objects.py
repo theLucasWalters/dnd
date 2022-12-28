@@ -1,5 +1,6 @@
 # imports
 import errors as err
+import functions as f
 
 
 # useful variables
@@ -78,17 +79,36 @@ consumables = [
 # OBJECTS
 ## CHARACTERS
 class Character(object):
-    def __init__(self, name:str, hit_points:int, alignment:str, level:int, skill:str, species:str, equipment:str=[]):
-        self.name       = name
-        self.hp         = hit_points
-        self.alignment  = alignment
-        self.level      = level
-        self.skill      = skill
-        self.species    = species
-        self.equipment  = equipment
-        self.check_valid()
+    def __init__(self,
+        name:str,
+        hit_points:int,
+        alignment:str,
+        level:int,
+        species:str,
+        equipment:list[str],
+        strength:int,
+        dexterity:int,
+        constitution:int,
+        intelligence:int,
+        wisdom:int,
+        charisma:int):
 
-    # method to check if inputted values are valid
+        self.name         = name
+        self.hp           = hit_points
+        self.alignment    = alignment
+        self.level        = level
+        self.species      = species
+        self.equipment    = equipment
+        self.strength     = strength
+        self.dexterity    = dexterity
+        self.constitution = constitution
+        self.intelligence = intelligence
+        self.wisdom       = wisdom
+        self.charisma     = charisma
+        self.set_modifiers(strength, dexterity, constitution, intelligence, wisdom, charisma)
+        self.initiative   = self.dex_mod
+
+    # method to check if values input are valid
     def check_valid(self):
         error:bool = False
 
@@ -107,27 +127,35 @@ class Character(object):
         else:
             pass
 
+    def set_modifiers(self, stren, dex, const, intel, wis, charis):
+        self.stren_mod  = f.set_mods(stren)
+        self.dex_mod    = f.set_mods(dex)
+        self.const_mod  = f.set_mods(const)
+        self.intel_mod  = f.set_mods(intel)
+        self.wis_mod    = f.set_mods(wis)
+        self.charis_mod = f.set_mods(charis)
+
 
 class Player(Character):
-    def __init__(self, name, hit_points, alignment, level, skill, species, equipment, friendly:bool=True):
-        super().__init__(name, hit_points, alignment, level, skill, species, equipment)
+    def __init__(self, name, hit_points, alignment, level, species, equipment, friendly:bool=True):
+        super().__init__(name, hit_points, alignment, level, species, equipment)
         self.friendly = friendly
 
 
 class NPC(Character):
-    def __init__(self, name, hit_points, alignment, level, skill, species):
-        super().__init__(name, hit_points, alignment, level, skill, species)
+    def __init__(self, name, hit_points, alignment, level, species):
+        super().__init__(name, hit_points, alignment, level, species)
 
 
 class Friendly(NPC):
-    def __init__(self, name, hit_points, alignment, level, skill, species, equipment, friendly:bool=True):
-        super().__init__(name, hit_points, alignment, level, skill, species, equipment)
+    def __init__(self, name, hit_points, alignment, level, species, equipment, friendly:bool=True):
+        super().__init__(name, hit_points, alignment, level, species, equipment)
         self.friendly = friendly
 
 
 class Enemy(NPC):
-    def __init__(self, name, hit_points, alignment, level, skill, species, equipment, friendly:bool=False):
-        super().__init__(name, hit_points, alignment, level, skill, species, equipment)
+    def __init__(self, name, hit_points, alignment, level, species, equipment, friendly:bool=False):
+        super().__init__(name, hit_points, alignment, level, species, equipment)
         self.friendly = friendly
 
 
