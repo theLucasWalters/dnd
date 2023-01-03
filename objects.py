@@ -85,13 +85,13 @@ class Character(object):
         alignment:str,
         level:int,
         species:str,
-        equipment:list[str],
         strength:int,
         dexterity:int,
         constitution:int,
         intelligence:int,
         wisdom:int,
-        charisma:int):
+        charisma:int,
+        equipment:list[str]=[]):
 
         self.name         = name
         self.hp           = hit_points
