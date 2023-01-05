@@ -74,27 +74,27 @@ def d20(character, modifier:str, advantage:bool=False, disadvantage:bool=False) 
 
 # roll a d12
 def d12() -> int:
-    return
+    return random.randint(1, 12)
 
 
 # roll a d10
 def d10() -> int:
-    return
+    return random.randint(1, 10)
 
 
 # roll a d8
 def d8() -> int:
-    return
+    return random.randint(1, 8)
 
 
 # roll a d6
 def d6() -> int:
-    return
+    return random.randint(1, 6)
 
 
 # roll a d4
 def d4() -> int:
-    return
+    return random.randint(1, 4)
 
 
 # for testing only
