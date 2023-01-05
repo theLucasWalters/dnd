@@ -1,5 +1,12 @@
 import random
 
+# valid types for d20 rolls
+roll_types = [
+    "attack",
+    "check",
+    "save"
+]
+
 
 # roll a d100
 def d100() -> int:
@@ -7,15 +14,23 @@ def d100() -> int:
 
 
 # roll a d20
-def d20(character, modifier:str, advantage:bool=False, disadvantage:bool=False) -> int:
+# this is hands-down the most complex die rolling function
+def d20(character, modifier:str, roll_type:str, advantage:bool=False, disadvantage:bool=False) -> int:
+    # make sure the `roll_type` is valid
+    if (roll_type not in roll_types):
+        print(Exception(f"Not a valid roll type: '{roll_type}'")); quit()
+
+    # get the raw roll
     raw_roll:int = random.randint(1, 20)
-    final_roll:int = 0
 
     if (raw_roll == 1):
         # crit fail
         return 1
     elif (raw_roll == 20):
         # crit success
+        return 20
+    elif (raw_roll == 19 and character._class == "fighter" and character.level == 3 and roll_type == "attack"):
+        # level 3 fighters crit on attack rolls of 20 and 19
         return 20
     else:
         # add the necessary modifiers to the roll
@@ -70,6 +85,41 @@ def d20(character, modifier:str, advantage:bool=False, disadvantage:bool=False) 
                 pass
             case "survival":
                 pass
+
+
+# determine characteristics for a new character
+def creator_d20():
+    # nothing quite yet
+    return
+
+
+# find out hp
+def creator_hp(char_class):
+    match char_class:
+        case "barbarian":
+            return d12()
+        case "paladin":
+            return d10()
+        case "fighter":
+            return d10()
+        case "ranger":
+            return d10()
+        case "monk":
+            return d8()
+        case "druid":
+            return d8()
+        case "rogue":
+            return d8()
+        case "bard":
+            return d8()
+        case "cleric":
+            return d8()
+        case "warlock":
+            return d8()
+        case "wizard":
+            return d6()
+        case "sorcerer":
+            return d6()
 
 
 # roll a d12

@@ -1,6 +1,6 @@
 # imports
-import errors as err
 import functions as f
+import rolls as r
 
 
 # useful variables
@@ -15,6 +15,22 @@ aligns = [
     "Lawful Evil",
     "Neutral Evil",
     "Chaotic Evil",
+]
+
+## character classes
+classes = [
+    "barbarian",
+    "bard",
+    "cleric",
+    "druid",
+    "fighter",
+    "monk",
+    "paladin",
+    "ranger",
+    "rogue",
+    "sorcerer",
+    "warlock",
+    "wizard"
 ]
 
 ## all the difference species
@@ -83,6 +99,7 @@ class Character(object):
         name:str,
         hit_points:int,
         alignment:str,
+        _class:str,
         level:int,
         species:str,
         strength:int,
@@ -96,9 +113,11 @@ class Character(object):
         self.name         = name
         self.hp           = hit_points
         self.alignment    = alignment
+        self._class       = _class # use `_class` to not interfere with Python's `class` word
         self.level        = level
         self.species      = species
         self.equipment    = equipment
+        self.check_valid()
         self.strength     = strength
         self.dexterity    = dexterity
         self.constitution = constitution
@@ -112,20 +131,18 @@ class Character(object):
     def check_valid(self):
         error:bool = False
 
-        # check the alignment
         if self.alignment not in aligns:
-            print(err.InvalidAlignment(self.alignment))
+            print(Exception(f"Not a valid alignment: '{self.alignment}'"))
             error = True
-
-        # check species
         if self.species not in all_species:
-            print(err.InvalidSpecies(self.species))
+            print(Exception(f"Not a valid species: '{self.species}'"))
+            error = True
+        if self._class not in classes:
+            print(Exception(f"Not a valid class: '{self._class}'"))
             error = True
 
         if error:
             quit()
-        else:
-            pass
 
     def set_modifiers(self, stren, dex, const, intel, wis, charis):
         self.stren_mod  = f.set_mods(stren)
@@ -176,3 +193,12 @@ class Consumable(Item):
     def __init__(self, price, weight, description:str):
         super().__init__(price, weight)
         self.description = description
+
+
+# for testing
+if __name__ == "__main__":
+    name = "Markuss Kingston"
+    race = all_species[0] # human
+    char_class = classes[4] # fighter
+    hp = r.creator_hp(char_class)
+    test_character = Character
